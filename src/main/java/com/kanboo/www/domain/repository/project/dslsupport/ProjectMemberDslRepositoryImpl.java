@@ -1,21 +1,12 @@
 package com.kanboo.www.domain.repository.project.dslsupport;
 
-import com.kanboo.www.domain.entity.board.QBoard;
-import com.kanboo.www.domain.entity.board.QProjectBoard;
-import com.kanboo.www.domain.entity.member.ProjectMember;
-import com.kanboo.www.domain.entity.member.QBan;
-import com.kanboo.www.domain.entity.member.QMember;
-import com.kanboo.www.domain.entity.member.QProjectMember;
+import com.kanboo.www.domain.entity.member.*;
 import com.kanboo.www.domain.entity.project.*;
 import com.querydsl.core.BooleanBuilder;
-import com.querydsl.core.Tuple;
-import com.querydsl.jpa.JPAExpressions;
-import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 
 import javax.persistence.EntityManager;
-import java.util.ArrayList;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -109,4 +100,38 @@ public class ProjectMemberDslRepositoryImpl implements ProjectMemberDslRepositor
                 .limit(10)
                 .fetch();
     }
+
+    @Override
+    public List<ProjectMember> getAllProjectMember(Long prjctIdx) {
+
+        QProjectMember qProjectMember = QProjectMember.projectMember;
+        QMember qMember = QMember.member;
+        QProject qProject = QProject.project;
+
+        JPAQueryFactory query = new JPAQueryFactory(em);
+
+        return query.select(qProjectMember)
+                .from(qMember, qProjectMember)
+                .where(qMember.memIdx.eq(qProjectMember.member.memIdx).and(
+                        qProjectMember.project.prjctIdx.eq(prjctIdx)
+
+                )).fetch();
+
+    }
+
+    @Override
+    public void insertProjectMember(ProjectMember projectMember) {
+        QProjectMember qProjectMember = QProjectMember.projectMember;
+        QMember qMember = QMember.member;
+        QProject qProject = QProject.project;
+
+        JPAQueryFactory query = new JPAQueryFactory(em);
+
+        query.insert(qProjectMember).
+                columns(qMember.memIdx, qProject.prjctIdx, qProjectMember.prjctMemRole,
+                        qProjectMember).execute();
+
+    }
+
+
 }

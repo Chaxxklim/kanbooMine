@@ -12,4 +12,8 @@ public interface MemberDslRepository {
 	List<Member> findAllMemberBanInfo(String selected, String keyword, int articleOnView);
 
 	long getMaxIndexOfMember(String keyword, String selected);
+
+	List<Member> searchMemberByKeyword(String keyword);
+
+
 }

@@ -4,10 +4,10 @@
       <div class="project-name-div">{{$store.state.demand.projectName}}</div>
       <div class="modify-date-div">Last Modified Data : {{$store.state.demand.modifiedDate}}</div>
       <div class="main-top-right-div">
-        <select class="download-select" @change="down($event)">
-          <option class="download-select-option" value="none">Export</option>
-          <option class="download-select-option" value="PDF">PDF</option>
-          <option class="download-select-option" value="Excel">Excel</option>
+        <select class="download-select" @change="down($event)" id="export-select">
+          <option class="download-select-option" value="none" id="select-none">Export</option>
+          <option class="download-select-option" value="PDF" id="select-pdf">PDF</option>
+          <option class="download-select-option" value="Excel" id="select-excel">Excel</option>
         </select>
         <button @click="save" class="addRow-btn">저장</button>
         <button @click="addRow" class="addRow-btn">추가</button>
@@ -80,7 +80,7 @@ import DemandTable from '@/components/component/acess/projectDetail/demand/Deman
 }
 
 .main-top-right-div{
-  width : 500px;
+  width : 350px;
   justify-self: end;
   display: flex;
   justify-content: space-between;
@@ -131,8 +131,13 @@ import DemandTable from '@/components/component/acess/projectDetail/demand/Deman
 
 .uploadFile-label{
   background-color: gray;
-  width: 42px;
+  width: 50px;
   height: 22px;
+  border-radius: 5px;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .uploadFile{
@@ -147,7 +152,7 @@ import DemandTable from '@/components/component/acess/projectDetail/demand/Deman
 .demand-head{
 }
 .addRow-btn{
-  background: orange;
+  background: #FF8906;
   color : white;
   border-radius: 5px;
 }

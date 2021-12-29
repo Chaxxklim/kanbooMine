@@ -9,5 +9,5 @@ import java.util.List;
 
 @Repository
 public interface ProjectRepository extends JpaRepository<Project, Long>, ProjectsDslRepository {
-	Project findByPrjctIdx(Long idx);
+    Project findByPrjctIdx(Long idx);
 }
