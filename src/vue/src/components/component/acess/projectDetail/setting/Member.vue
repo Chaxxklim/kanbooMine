@@ -28,15 +28,15 @@
           </div>
           <div class="member-li-role-div">
             <div>
-              <span class="role-span" :class="{red : item.tempRoleData.PM}" :id="`PM-span${index}`" @click="spanClick('PM', index)">PM</span>
-              <span class="role-span" :class="{red : item.tempRoleData.PL}" :id="`PL-span${index}`" @click="spanClick('PL', index)">PL</span>
-              <span class="role-span" :class="{red : item.tempRoleData.DA}" :id="`DA-span${index}`" @click="spanClick('DA', index)">DA</span>
-              <span class="role-span" :class="{red : item.tempRoleData.TA}" :id="`TA-span${index}`" @click="spanClick('TA', index)">TA</span>
-              <span class="role-span" :class="{red : item.tempRoleData.AA}" :id="`AA-span${index}`" @click="spanClick('AA', index)">AA</span>
-              <span class="role-span" :class="{red : item.tempRoleData.UA}" :id="`UA-span${index}`" @click="spanClick('UA', index)">UA</span>
-              <span class="role-span" :class="{red : item.tempRoleData.BA}" :id="`BA-span${index}`" @click="spanClick('BA', index)">BA</span>
-              <span class="role-span" :class="{red : item.tempRoleData.EA}" :id="`EA-span${index}`" @click="spanClick('EA', index)">EA</span>
-              <span class="role-span" :class="{red : item.tempRoleData.SA}" :id="`SA-span${index}`" @click="spanClick('SA', index)">SA</span>
+              <span class="role-span" :class="{red : item.tempRoleData.PM}" :id="`PM-span${index}`" @click="spanClick('PM', index, item)">PM</span>
+              <span class="role-span" :class="{red : item.tempRoleData.PL}" :id="`PL-span${index}`" @click="spanClick('PL', index, item)">PL</span>
+              <span class="role-span" :class="{red : item.tempRoleData.DA}" :id="`DA-span${index}`" @click="spanClick('DA', index, item)">DA</span>
+              <span class="role-span" :class="{red : item.tempRoleData.TA}" :id="`TA-span${index}`" @click="spanClick('TA', index, item)">TA</span>
+              <span class="role-span" :class="{red : item.tempRoleData.AA}" :id="`AA-span${index}`" @click="spanClick('AA', index, item)">AA</span>
+              <span class="role-span" :class="{red : item.tempRoleData.UA}" :id="`UA-span${index}`" @click="spanClick('UA', index, item)">UA</span>
+              <span class="role-span" :class="{red : item.tempRoleData.BA}" :id="`BA-span${index}`" @click="spanClick('BA', index, item)">BA</span>
+              <span class="role-span" :class="{red : item.tempRoleData.EA}" :id="`EA-span${index}`" @click="spanClick('EA', index, item)">EA</span>
+              <span class="role-span" :class="{red : item.tempRoleData.SA}" :id="`SA-span${index}`" @click="spanClick('SA', index, item)">SA</span>
             </div>
           </div>
         </li>
@@ -66,58 +66,43 @@ export default {
       // spanClick: 'setting/spanClick',
       isRoleMatch: 'setting/isRoleMatch',
       clickModifyBtn: 'setting/clickModifyBtn',
-
-
-
     }),
 
-    spanClick(role, index){ // 클릭했을 때 이벤트 (배열에 데이터 넣음)
-
-      for(let i = 0; i < this.$store.state.setting.projectMemberList.length; i++){
-        if(role === 'PM'){
-          alert("PM은 수정할 수 없습니다.");
-          break;
-        }
-        if(this.$store.state.setting.projectMemberList[i].roleList.includes(role)){// 사용자의 포지션과 일치할때
-          for(let j = 0; j < this.$store.state.setting.projectMemberList[i].roleList.length; j++){
-            if(this.$store.state.setting.projectMemberList[i].roleList[j] === role){
-              this.$store.state.setting.projectMemberList[i].roleList.splice(j, 1);
-              document.getElementById(role + '-span' + index).style.color = "white";
-
-              let newData = "";
-              for (const key in this.$store.state.setting.projectMemberList[i]) {
-                newData += key;
-              }
-              this.$store.state.setting.projectMemberList[i].prjctMemRole = newData;
-            }
+    spanClick(role, index, item){ // 클릭했을 때 이벤트 (배열에 데이터 넣음)
+      if(role === 'PM'){ // PM 일 때
+        alert("PM은 수정할 수 없습니다.")
+      } else{ // PM 이 아닐 때
+        if(item.roleList.includes(role)){
+          for(let j = 0; j < item.roleList.length; j++){
+            item.roleList.splice(j, 1);
           }
-
-        }else { // 사용자의 포지션과 일치하지 않을 때
-          this.$store.state.setting.projectMemberList[i].roleList.push(role)
+          let tempStr = "";
+          for(let j = 0; j < item.roleList.length; j++){
+            tempStr += item.roleList[j] + ",";
+          }
+          item.prjctMemRole = tempStr;
+          document.getElementById(role + '-span' + index).style.color = "white";
+        } else{
+          item.roleList.push(role)
+          let tempStr = "";
+          for(let j = 0; j < item.roleList.length; j++){
+            tempStr += item.roleList[j] + ",";
+          }
+          item.prjctMemRole = tempStr;
           document.getElementById(role + '-span' + index).style.color = "red";
-          let origin = this.$store.state.setting.projectMemberList[i].prjctMemRole
-          let newData = origin + "," + role;
-          this.$store.state.setting.projectMemberList[i].prjctMemRole = newData;
-
-
         }
       }
-      console.log(this.$store.state.setting.projectMemberList)
-      },
+      console.log(item.prjctMemRole)
+    }
   },
-
   computed :{
     classObject(){
       return {
-
       }
     }
   },
-
   mounted() {
-
   },
-
 
 }
 </script>

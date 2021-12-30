@@ -39,6 +39,7 @@ public class DemandController {
         System.out.println(list.toString());
         return list;
     }
+
     @PostMapping("/deleteRows")
     public void deleteDemandContent(@RequestBody Map<String, List<DemandContentDTO>> map){
         List<DemandContentDTO> params = map.get("params");
@@ -86,4 +87,7 @@ public class DemandController {
         }
         return new ResponseEntity<>(resource, headers, HttpStatus.OK);
     }
+
+
+
 }

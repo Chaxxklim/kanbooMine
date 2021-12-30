@@ -4,6 +4,7 @@ const setting = {
   namespaced: true,
   state: {
 
+    userInfo : "",
     clickState  : false,
     projectName : 'Test_Project',
     roleList : [// 여기에 ajax로 요청한 데이터 들어와야함.
@@ -61,8 +62,9 @@ const setting = {
     },
 
     loadData(state){
+      let idx = sessionStorage.getItem("project")
       axios.post('/setting/loadProjectMember', {
-        prjctIdx : 1
+        prjctIdx : idx
       }).then(res => {
         for (const resKey in res.data) {
           state.projectMemberList.push(res.data[resKey]);
@@ -123,6 +125,7 @@ const setting = {
 
 
 
+
     isRoleMatch(state){
       alert("gogo!!")
       for(let i in state.projectMemberList){
@@ -164,10 +167,20 @@ const setting = {
 
         })
       }
-
     },
 
-
+    getUserInfo(state){
+      let projectIdx = sessionStorage.getItem("project")
+      let userToken = sessionStorage.getItem("token");
+      axios.post('/access/checkProjectMember', {
+        token : userToken,
+        projectIdx : projectIdx
+      }).then(res =>{
+        state.userInfo = res.data;
+        console.log(res)
+        console.log(userToken)
+      })
+    }
 
 
 

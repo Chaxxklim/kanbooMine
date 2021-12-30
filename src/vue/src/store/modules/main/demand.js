@@ -64,11 +64,12 @@ const demand = {
     mutations: {
 
         addRow(state) {
+            let sessionIdx = sessionStorage.getItem("project")
             state.rows.push({
 
                 chk : "",
                 demand: {
-                    demandIdx : "1", // 스토어에서 디맨드idx받아오는거 만들기
+                    demandIdx : sessionIdx, // 스토어에서 디맨드idx받아오는거 만들기
                     project : {
                         prjctIdx : "",
                         prjctNm : ""
@@ -117,8 +118,9 @@ const demand = {
             })
         },
         load(state){
+            let sessionIdx = sessionStorage.getItem("project");
             axios.post('/demand/load',  {
-                prjctIdx : 1
+                idx : sessionIdx
             }).then(res => {
                 for (const resKey in res.data) {
                     state.rows.push(res.data[resKey])
@@ -128,24 +130,24 @@ const demand = {
                 console.log("요구사항 정의서 상세정보를 불러오는데 실패했습니다.");
                 console.log(state.sideBar)
             });
+
         },
         uploadFile(state){
+            let sessionIdx = sessionStorage.getItem("project")
             if(confirm("업로드 시 기존 요구사항 내용이 삭제됩니다. 진행하시겠습니까?") === true){
                 console.log("uploadFIle")
                 const frm = new FormData();
-                let demandIdx = state.storeDemandIdx;
                 let uploadFile = document.getElementById("uploadFile");
 
                 frm.append("uploadFile", uploadFile.files[0]);
-                frm.append('demandIdx', demandIdx);
-                console.log(demandIdx)
+                frm.append('demandIdx', sessionIdx);
                 axios.post('/demand/importDocument', frm, {
                     headers : {
                         'Content-Type' : 'multipart/form-data'
                     }
                 }).then(() =>{
                     axios.post('/demand/load', {
-                        idx : 1 // 나중에 여기에 스토어에서 프로젝트 데이터 빼오자
+                        idx : sessionIdx // 나중에 여기에 스토어에서 프로젝트 데이터 빼오자
                     }).then(res => {
                         state.rows = [];
                         for (const resKey in res.data) {
@@ -259,7 +261,11 @@ const demand = {
             }
         },
         deleteRow(state){
+            let sessionIdx = sessionStorage.getItem("project")
             if(confirm("삭제하시겠습니까?") === true){
+                if(state.checkedArr == null){
+                    console.log("null checkedArr")
+                }
                 const arr = []
                 for(let item of state.checkedArr) {
                     arr.push({...item});
@@ -269,7 +275,7 @@ const demand = {
                     params: arr
                 }).then(() => {
                     axios.post('/demand/load', {
-                        idx : 1 // 나중에 여기에 스토어에서 프로젝트 데이터 빼오자
+                        idx : sessionIdx // 나중에 여기에 스토어에서 프로젝트 데이터 빼오자
                     }).then(res => {
                         state.rows.splice(0, state.rows.length);
                         for (const resKey in res.data) {

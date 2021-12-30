@@ -40,13 +40,14 @@ export default {
   methods :{
     ...mapMutations({
       load : "setting/loadData",
-      isRoleMatch : "setting/isRoleMatch"
+      isRoleMatch : "setting/isRoleMatch",
+      getUserInfo : "setting/getUserInfo"
     })
   },
 
   mounted() {
     this.load();
-
+    this.getUserInfo();
   }
 }
 

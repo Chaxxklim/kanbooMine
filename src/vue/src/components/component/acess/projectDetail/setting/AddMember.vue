@@ -4,7 +4,7 @@
       <div class="main-start-text"><h3>멤버 추가</h3></div>
       <ul class="select-member-list" id="select-member-list">
         <li v-for="(item, index) in this.$store.state.setting.selectMemberList" :key="index" class="select-member-info"
-            id="select-member-info(`${index}`)">
+            :id="select-member-info(`${index}`)">
           <div class="select-member-image">
             <img :src="item.memImg" class="member-image" alt=""/>
           </div>
@@ -37,7 +37,7 @@
     <div class="main-right-div">
       <input type="text" class="search-input" id="search-member" v-model="searchKeyword" @keyup="searchName(searchKeyword)">
       <ul class="search-member-result-list">
-        <li id="selectMember(index)" @click="searchMemberSelect(item, index),
+        <li :id="selectMember(index)" @click="searchMemberSelect(item, index),
              leftTextHideFunction()" v-for="(item, index) in
              this.$store.state.setting.searchMemberList" :key="index" class="search-member-result">
           <div class="search-member-result-image">
@@ -226,6 +226,7 @@ export default {
   font-size : 20px;
 
 }
+
 .search-member-result-list::-webkit-scrollbar{
   display: none;
 }
@@ -233,6 +234,7 @@ export default {
   display : flex;
   color : white;
   padding : 3px;
+  cursor: Pointer;
 }
 .select-member-insert-btn{
   border-radius: 5px;
